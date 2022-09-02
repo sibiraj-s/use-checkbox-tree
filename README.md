@@ -2,6 +2,10 @@
 
 > React hook for checkbox tree component
 
+[![Tests](https://github.com/sibiraj-s/use-checkbox-tree/actions/workflows/tests.yml/badge.svg)](https://github.com/sibiraj-s/use-checkbox-tree/actions/workflows/tests.yml)
+[![Version](https://badgen.net/npm/v/use-checkbox-tree)](https://npmjs.com/use-checkbox-tree)
+[![License](https://badgen.net/npm/license/use-checkbox-tree)](https://github.com/sibiraj-s/use-checkbox-tree/blob/master/LICENSE)
+
 ## Installation
 
 ```bash
