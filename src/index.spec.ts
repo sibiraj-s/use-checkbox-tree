@@ -59,6 +59,17 @@ it('should set indeterminate nodes correctly', () => {
   expect(result.current.indeterminates).toEqual(['1']);
 });
 
+it('should select node by default with selectNode method', () => {
+  const { result } = renderHook(() => useCheckboxTree(nodes, []));
+
+  act(() => {
+    result.current.selectNode('2');
+  });
+
+  expect(result.current.checked).toEqual(['2', '2.1']);
+  expect(result.current.indeterminates).toEqual(['1']);
+});
+
 it('should set uncheck nodes correctly', () => {
   const { result } = renderHook(() => useCheckboxTree(nodes, ['2']));
 
@@ -93,5 +104,15 @@ it('should do nothing when selectNode is called with id not in the tree', () => 
     const checked = result.current.selectNode('10', true);
     expect(checked).toEqual(expect.arrayContaining([]));
   });
+  expect(result.current.checked).toEqual([]);
+});
+
+it('should clear checked items with clear method', () => {
+  const { result } = renderHook(() => useCheckboxTree(nodes, ['1']));
+
+  act(() => {
+    result.current.clear();
+  });
+
   expect(result.current.checked).toEqual([]);
 });

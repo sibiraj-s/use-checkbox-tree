@@ -110,6 +110,10 @@ const useCheckboxTree = <T extends NodeId>(nodes: Nodes<T>, initialChecked: T[] 
     [checked, flatNodes]
   );
 
+  const clear = useCallback(() => {
+    setChecked([]);
+  }, []);
+
   const state = useMemo(() => {
     const nodeState = {} as NodeState<T>; // eslint-disable-line @typescript-eslint/consistent-type-assertions
 
@@ -155,6 +159,7 @@ const useCheckboxTree = <T extends NodeId>(nodes: Nodes<T>, initialChecked: T[] 
     state,
     indeterminates,
     selectNode,
+    clear,
   } as const;
 };
 
