@@ -81,3 +81,17 @@ it('selectNode should return checked items', () => {
 
   expect(result.current.checked).toEqual(['2', '2.1']);
 });
+
+it('should throw error for nodes with duplicated ids', () => {
+  expect(() => renderHook(() => useCheckboxTree([{ id: 1 }, { id: 1 }]))).toThrow();
+});
+
+it('should do nothing when selectNode is called with id not in the tree', () => {
+  const { result } = renderHook(() => useCheckboxTree(nodes));
+
+  act(() => {
+    const checked = result.current.selectNode('10', true);
+    expect(checked).toEqual(expect.arrayContaining([]));
+  });
+  expect(result.current.checked).toEqual([]);
+});
