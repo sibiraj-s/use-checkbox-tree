@@ -27,7 +27,7 @@
     "checkbox-tree"
   ],
   "scripts": {
-    "lint": "eslint .",
+    "lint": "eslint . --ext=.js,.ts --ignore-path=.gitignore",
     "test": "jest",
     "build": "rollup -c",
     "prepare": "is-ci || husky install"
