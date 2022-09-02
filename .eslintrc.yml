@@ -14,17 +14,10 @@ rules:
 overrides:
   - files:
       - '**/*.ts'
-    extends:
-      - pegasus/typescript
-      - plugin:prettier/recommended
-    parserOptions:
-      project: './tsconfig.json'
-
-  - files:
       - '**/*.tsx'
     extends:
-      - pegasus/typescript
       - pegasus/react
+      - pegasus/typescript
       - plugin:prettier/recommended
     parserOptions:
       project: './tsconfig.json'
