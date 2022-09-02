@@ -53,9 +53,12 @@ root.render(<TreeComponent />);
 - selectNode - a function to select node
 
 ```js
+selectNode('1'); // select a node
 selectNode('1', true); // select a node
 selectNode('1', false); // deselect a node
 ```
+
+- clear - a function to clear all selected items
 
 - state - object with id as key and value as `boolean | indeterminate`
 
