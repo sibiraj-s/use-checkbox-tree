@@ -110,6 +110,13 @@ const useCheckboxTree = <T extends NodeId>(nodes: Nodes<T>, initialChecked: T[] 
     [checked, flatNodes]
   );
 
+  const deSelectNode = useCallback(
+    (id: T) => {
+      selectNode(id, false);
+    },
+    [selectNode]
+  );
+
   const clear = useCallback(() => {
     setChecked([]);
   }, []);
@@ -159,6 +166,7 @@ const useCheckboxTree = <T extends NodeId>(nodes: Nodes<T>, initialChecked: T[] 
     state,
     indeterminates,
     selectNode,
+    deSelectNode,
     clear,
   } as const;
 };
