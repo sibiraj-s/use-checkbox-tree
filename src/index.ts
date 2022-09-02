@@ -92,7 +92,7 @@ const useCheckboxTree = <T extends NodeId>(nodes: Nodes<T>, initialChecked: T[] 
   const flatNodes = useMemo(() => flattenNodes(nodes), [nodes]);
 
   const selectNode = useCallback(
-    (id: T, isChecked: boolean) => {
+    (id: T, isChecked: boolean = true) => {
       const checkedSet = new Set<T>(checked);
 
       if (!flatNodes.has(id)) {
