@@ -51,7 +51,7 @@ root.render(<TreeComponent />);
 
 - checked - array of selected node ids
 - selectNode - a function to select node
-- deSelecttNode - a function to deselect node
+- deSelectNode - a function to deselect node
 
 ```js
 selectNode('1'); // select a node
