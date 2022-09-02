@@ -13,6 +13,12 @@ All notable changes to this project will be documented in this file.
 > - Documentation
 > - Internal
 
+## v0.1.2 (2022-09-02)
+
+#### Features
+
+- add deSelectNode method ([6773d8c](https://github.com/sibiraj-s/use-checkbox-tree/commit/6773d8c))
+
 ## v0.1.1 (2022-09-02)
 
 #### Features
