@@ -3,5 +3,6 @@
 
 npm run test -- --run
 
-echo "publint"
+echo "publint:"
 npx --no -- publint
+echo "\n"
