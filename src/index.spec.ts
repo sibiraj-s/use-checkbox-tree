@@ -83,7 +83,7 @@ it('should set uncheck nodes correctly', () => {
   expect(result.current.indeterminates).toEqual([]);
 });
 
-it('selectNode should return checked items', () => {
+it('should return checked items from selectNode', () => {
   const { result } = renderHook(() => useCheckboxTree(nodes, ['2']));
   act(() => {
     const checked = result.current.selectNode('2', true);
