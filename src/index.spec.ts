@@ -2,6 +2,7 @@ import { expect, it } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 
 import useCheckboxTree from '.';
+import { suppressErrorOutput } from './test-utils';
 
 const nodes = [
   {
@@ -83,7 +84,7 @@ it('should set uncheck nodes correctly', () => {
   expect(result.current.indeterminates).toEqual([]);
 });
 
-it('should return checked items from selectNode', () => {
+it('should return checked items from ', () => {
   const { result } = renderHook(() => useCheckboxTree(nodes, ['2']));
   act(() => {
     const checked = result.current.selectNode('2', true);
@@ -91,10 +92,6 @@ it('should return checked items from selectNode', () => {
   });
 
   expect(result.current.checked).toEqual(['2', '2.1']);
-});
-
-it('should throw error for nodes with duplicated ids', () => {
-  expect(() => renderHook(() => useCheckboxTree([{ id: 1 }, { id: 1 }]))).toThrow();
 });
 
 it('should do nothing when selectNode is called with id not in the tree', () => {
@@ -115,4 +112,10 @@ it('should clear checked items with clear method', () => {
   });
 
   expect(result.current.checked).toEqual([]);
+});
+
+it('should throw error for nodes with duplicated ids', () => {
+  const restoreConsole = suppressErrorOutput();
+  expect(() => renderHook(() => useCheckboxTree([{ id: 1 }, { id: 1 }]))).toThrow();
+  restoreConsole();
 });
