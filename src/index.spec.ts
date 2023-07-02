@@ -1,4 +1,4 @@
-import { expect, it } from '@jest/globals';
+import { expect, it } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 
 import useCheckboxTree from '.';
