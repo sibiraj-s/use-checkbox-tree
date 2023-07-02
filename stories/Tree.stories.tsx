@@ -1,15 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import useCheckboxTree, {
-  CheckboxTreeProvider,
-  Nodes,
-  Node,
-  useCheckboxTreeContext,
-  UserCheckBoxTreeReturnType,
-} from '../src/index';
+import { useEffect, useRef } from 'react';
+
+import useCheckboxTree, { CheckboxTreeProvider, useCheckboxTreeContext } from '../src/index';
+import type { Nodes, Node, UserCheckBoxTreeReturnType } from '../src/types';
 
 import { ReactComponent as FolderIcon } from './assets/folder.svg';
 import { ReactComponent as FileIcon } from './assets/file.svg';
-import { useEffect, useRef } from 'react';
 
 const fileTree = [
   {
