@@ -21,6 +21,12 @@ overrides:
       - pegasus/typescript
     parserOptions:
       project: './tsconfig.eslint.json'
+  - files:
+      - '**/*.stories.tsx'
+    extends:
+      - plugin:storybook/recommended
+    parserOptions:
+      project: './tsconfig.eslint.json'
 
 ignorePatterns:
   - '!.storybook'
