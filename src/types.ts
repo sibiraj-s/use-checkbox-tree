@@ -1,9 +1,13 @@
+import { ReactNode } from 'react';
+
 export type NodeId = string | number;
-export type Node<T extends NodeId> = {
-  [key: string | number]: any;
-  id: T;
+
+export interface Node<T extends NodeId> {
+  [key: string]: any;
   children?: Nodes<T>;
-};
+  id: T;
+}
+
 export type Nodes<T extends NodeId> = Array<Node<T>>;
 
 export interface FlatNode<T extends NodeId> extends Node<T> {
@@ -24,3 +28,7 @@ export interface UserCheckBoxTreeReturnType<T extends NodeId> {
   deSelectNode: (id: T) => void;
   clear: () => void;
 }
+
+export type CheckboxTreeProviderProps<T extends NodeId> = UserCheckBoxTreeReturnType<T> & {
+  children: ReactNode | ReactNode[];
+};

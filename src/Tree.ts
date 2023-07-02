@@ -1,9 +1,9 @@
 import { useCallback, useMemo, useState } from 'react';
-import { ChecboxState, FlatNode, Node, NodeId, NodeState, Nodes, UserCheckBoxTreeReturnType } from './types';
+import { ChecboxState, FlatNode, Node, NodeId, NodeState, UserCheckBoxTreeReturnType } from './types';
 import { addToSet, flattenNodes, toggleChildren, toggleParent } from './helpers';
 
 const useCheckboxTree = <T extends NodeId>(
-  nodes: Nodes<T>,
+  nodes: Node<T>[],
   initialChecked: T[] = []
 ): UserCheckBoxTreeReturnType<T> => {
   const [checked, setChecked] = useState<T[]>(initialChecked);

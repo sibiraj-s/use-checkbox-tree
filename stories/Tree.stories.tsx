@@ -2,12 +2,19 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useEffect, useRef } from 'react';
 
 import useCheckboxTree, { CheckboxTreeProvider, useCheckboxTreeContext } from '../src/index';
-import type { Nodes, Node, UserCheckBoxTreeReturnType } from '../src/types';
+import type { UserCheckBoxTreeReturnType } from '../src/types';
 
 import { ReactComponent as FolderIcon } from './assets/folder.svg';
 import { ReactComponent as FileIcon } from './assets/file.svg';
 
-const fileTree = [
+interface TreeNode {
+  id: number;
+  name: string;
+  type: 'directory' | 'file';
+  children?: TreeNode[];
+}
+
+const fileTree: TreeNode[] = [
   {
     id: 1,
     name: 'root',
@@ -70,8 +77,8 @@ const fileTree = [
   },
 ];
 
-const TreeItem = ({ node }: { node: Node<number> }) => {
-  const { selectNode, state } = useCheckboxTreeContext() as UserCheckBoxTreeReturnType<number>;
+const TreeItem = ({ node }: { node: TreeNode }) => {
+  const { selectNode, state } = useCheckboxTreeContext() as UserCheckBoxTreeReturnType<TreeNode['id']>;
   const checkboxRef = useRef<HTMLInputElement>(null);
 
   const nodeState = state[node.id];
@@ -104,7 +111,7 @@ const TreeItem = ({ node }: { node: Node<number> }) => {
   );
 };
 
-const TreeView = ({ nodes }: { nodes: Nodes<number> }) => {
+const TreeView = ({ nodes }: { nodes: TreeNode[] }) => {
   return (
     <>
       {nodes.map((node) => {
@@ -126,7 +133,7 @@ const TreeView = ({ nodes }: { nodes: Nodes<number> }) => {
 };
 
 const CheckboxTree = () => {
-  const treeMethods = useCheckboxTree<number>(fileTree);
+  const treeMethods = useCheckboxTree(fileTree);
 
   return (
     <CheckboxTreeProvider {...treeMethods}>
@@ -136,11 +143,11 @@ const CheckboxTree = () => {
 };
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta = {
+const meta: Meta<typeof CheckboxTree> = {
   title: 'CheckboxTree',
   component: CheckboxTree,
   tags: ['autodocs'],
-} satisfies Meta<typeof CheckboxTree>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
