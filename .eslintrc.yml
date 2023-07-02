@@ -4,6 +4,7 @@ extends:
   - pegasus
   - pegasus/browser
   - pegasus/node
+  - prettier
 
 rules:
   no-warning-comments: off
@@ -18,6 +19,8 @@ overrides:
     extends:
       - pegasus/react
       - pegasus/typescript
-      - plugin:prettier/recommended
     parserOptions:
-      project: './tsconfig.json'
+      project: './tsconfig.eslint.json'
+
+ignorePatterns:
+  - '!.storybook'
