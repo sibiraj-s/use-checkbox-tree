@@ -5,4 +5,4 @@ npm run test -- --run
 
 echo "publint:"
 npx --no -- publint
-echo "\n"
+echo "" # to print a new line
