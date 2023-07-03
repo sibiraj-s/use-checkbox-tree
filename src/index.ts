@@ -1,6 +1,5 @@
-import useCheckboxTree from './Tree';
+import useCheckboxTree from './useCheckboxTree';
 
-export * from './Tree';
 export * from './context';
 export * from './types';
 
