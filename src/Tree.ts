@@ -43,24 +43,28 @@ const useCheckboxTree = <T extends NodeId>(
   const state = useMemo(() => {
     const nodeState = {} as NodeState<T>; // eslint-disable-line @typescript-eslint/consistent-type-assertions
 
-    const isNodeIndeterminate = (node: Node<T>) => {
+    const isNodeIndeterminate = (node: Node<T>, isChecked: boolean) => {
       let isIndeterminate = false;
+
+      if (isChecked) {
+        return isIndeterminate;
+      }
+
       const { children = [] } = node;
 
+      // check if child has any checked items
       isIndeterminate = children.some((child) => checked.includes(child.id));
 
-      if (!isIndeterminate) {
-        children.forEach((child) => {
-          isIndeterminate = isNodeIndeterminate(child);
-        });
-      }
+      // if there are no checked items in direct child
+      // try deeper by iterating over its child to check if there any checed items inside
+      isIndeterminate ||= children.some((child) => isNodeIndeterminate(child, isChecked));
 
       return isIndeterminate;
     };
 
     flatNodes.forEach((node: FlatNode<T>) => {
       const isChecked = checked.includes(node.id);
-      const isIndeterminate = !isChecked && isNodeIndeterminate(node);
+      const isIndeterminate = isNodeIndeterminate(node, isChecked);
       const checkboxState: ChecboxState = isIndeterminate ? 'indeterminate' : isChecked;
       nodeState[node.id] = checkboxState;
     });
