@@ -6,8 +6,8 @@ import { suppressErrorOutput } from './test-utils';
 
 const nodes = [
   {
-    id: '1',
-    children: [{ id: '2', children: [{ id: '2.1' }] }, { id: '3' }],
+    id: 1,
+    children: [{ id: 2, children: [{ id: 2.1 }] }, { id: 2.2 }],
   },
 ];
 
@@ -16,12 +16,12 @@ it('should return default values correctly', () => {
 
   expect(result.current.checked).toEqual([]);
   expect(result.current.indeterminates).toEqual([]);
-  expect(result.current.state).toEqual({
-    1: false,
-    2: false,
-    2.1: false,
-    3: false,
-  });
+
+  expect(result.current.state.get(1)).toEqual(false);
+  expect(result.current.state.get(2)).toEqual(false);
+  expect(result.current.state.get(2.1)).toEqual(false);
+  expect(result.current.state.get(2.2)).toEqual(false);
+
   expect(result.current.selectNode).toBeInstanceOf(Function);
 });
 
@@ -29,55 +29,66 @@ it('should check child nodes correctly', () => {
   const { result } = renderHook(() => useCheckboxTree(nodes, []));
 
   act(() => {
-    result.current.selectNode('1', true);
+    result.current.selectNode(1, true);
   });
 
-  expect(result.current.checked).toEqual(['1', '2', '2.1', '3']);
+  expect(result.current.checked).toEqual([1, 2, 2.1, 2.2]);
 });
 
 it('should check parent nodes correctly', () => {
   const { result } = renderHook(() => useCheckboxTree(nodes, []));
 
   act(() => {
-    result.current.selectNode('2', true);
+    result.current.selectNode(2, true);
   });
 
   act(() => {
-    result.current.selectNode('3', true);
+    result.current.selectNode(2.2, true);
   });
 
-  expect(result.current.checked).toEqual(expect.arrayContaining(['1', '2', '2.1', '3']));
+  expect(result.current.checked).toEqual(expect.arrayContaining([1, 2, 2.1, 2.2]));
 });
 
 it('should set indeterminate nodes correctly', () => {
   const { result } = renderHook(() => useCheckboxTree(nodes, []));
 
   act(() => {
-    result.current.selectNode('2', true);
+    result.current.selectNode(2, true);
   });
 
-  expect(result.current.checked).toEqual(['2', '2.1']);
-  expect(result.current.indeterminates).toEqual(['1']);
+  expect(result.current.checked).toEqual([2, 2.1]);
+  expect(result.current.indeterminates).toEqual([1]);
 });
 
-it('should select node by default with selectNode method', () => {
+it('should select node with selectNode method', () => {
   const { result } = renderHook(() => useCheckboxTree(nodes, []));
 
   act(() => {
-    result.current.selectNode('2');
+    result.current.selectNode(2);
   });
 
-  expect(result.current.checked).toEqual(['2', '2.1']);
-  expect(result.current.indeterminates).toEqual(['1']);
+  expect(result.current.checked).toEqual([2, 2.1]);
+  expect(result.current.indeterminates).toEqual([1]);
+});
+
+it('should deselect node with deSelectNode method', () => {
+  const { result } = renderHook(() => useCheckboxTree(nodes, [2.1, 2.2]));
+
+  act(() => {
+    result.current.deSelectNode(2.2);
+  });
+
+  expect(result.current.checked).toEqual([2.1]);
+  expect(result.current.indeterminates).toEqual([1, 2]);
 });
 
 it('should set uncheck nodes correctly', () => {
-  const { result } = renderHook(() => useCheckboxTree(nodes, ['2']));
+  const { result } = renderHook(() => useCheckboxTree(nodes, [2]));
 
-  expect(result.current.checked).toEqual(['2']);
+  expect(result.current.checked).toEqual([2]);
 
   act(() => {
-    result.current.selectNode('2', false);
+    result.current.selectNode(2, false);
   });
 
   expect(result.current.checked).toEqual([]);
@@ -85,27 +96,27 @@ it('should set uncheck nodes correctly', () => {
 });
 
 it('should return checked items from ', () => {
-  const { result } = renderHook(() => useCheckboxTree(nodes, ['2']));
+  const { result } = renderHook(() => useCheckboxTree(nodes, [2]));
   act(() => {
-    const checked = result.current.selectNode('2', true);
-    expect(checked).toEqual(expect.arrayContaining(['2']));
+    const checked = result.current.selectNode(2, true);
+    expect(checked).toEqual(expect.arrayContaining([2]));
   });
 
-  expect(result.current.checked).toEqual(['2', '2.1']);
+  expect(result.current.checked).toEqual([2, 2.1]);
 });
 
 it('should do nothing when selectNode is called with id not in the tree', () => {
   const { result } = renderHook(() => useCheckboxTree(nodes));
 
   act(() => {
-    const checked = result.current.selectNode('10', true);
+    const checked = result.current.selectNode(10, true);
     expect(checked).toEqual(expect.arrayContaining([]));
   });
   expect(result.current.checked).toEqual([]);
 });
 
 it('should clear checked items with clear method', () => {
-  const { result } = renderHook(() => useCheckboxTree(nodes, ['1']));
+  const { result } = renderHook(() => useCheckboxTree(nodes, [1]));
 
   act(() => {
     result.current.clear();

@@ -29,19 +29,14 @@ const useCheckboxTree = <T extends NodeId>(
     [checked, flatNodes]
   );
 
-  const deSelectNode = useCallback(
-    (id: T) => {
-      selectNode(id, false);
-    },
-    [selectNode]
-  );
+  const deSelectNode = useCallback((id: T) => selectNode(id, false), [selectNode]);
 
   const clear = useCallback(() => {
     setChecked([]);
   }, []);
 
   const state = useMemo(() => {
-    const nodeState = {} as NodeState<T>; // eslint-disable-line @typescript-eslint/consistent-type-assertions
+    const nodeState: NodeState<T> = new Map();
 
     const isNodeIndeterminate = (node: Node<T>, isChecked: boolean) => {
       let isIndeterminate = false;
@@ -66,22 +61,14 @@ const useCheckboxTree = <T extends NodeId>(
       const isChecked = checked.includes(node.id);
       const isIndeterminate = isNodeIndeterminate(node, isChecked);
       const checkboxState: ChecboxState = isIndeterminate ? 'indeterminate' : isChecked;
-      nodeState[node.id] = checkboxState;
+      nodeState.set(node.id, checkboxState);
     });
 
     return nodeState;
   }, [checked, flatNodes]);
 
   const indeterminates = useMemo(() => {
-    return Object.keys(state).reduce<T[]>((prev, id) => {
-      const nodeId = id as T;
-
-      if (state[nodeId] === 'indeterminate') {
-        return [...prev, nodeId];
-      }
-
-      return prev;
-    }, []);
+    return [...state].filter((cbState) => cbState[1] === 'indeterminate').map((cbState) => cbState[0]);
   }, [state]);
 
   return {

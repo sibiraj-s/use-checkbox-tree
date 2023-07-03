@@ -78,17 +78,18 @@ const fileTree: TreeNode[] = [
 ];
 
 const TreeItem = ({ node }: { node: TreeNode }) => {
-  const { selectNode, state } = useCheckboxTreeContext() as UserCheckBoxTreeReturnType<TreeNode['id']>;
+  const { selectNode, checked, indeterminates } = useCheckboxTreeContext() as UserCheckBoxTreeReturnType<
+    TreeNode['id']
+  >;
   const checkboxRef = useRef<HTMLInputElement>(null);
-
-  const nodeState = state[node.id];
 
   useEffect(() => {
     if (!checkboxRef.current) {
       return;
     }
-    checkboxRef.current.indeterminate = nodeState === 'indeterminate';
-  }, [nodeState]);
+
+    checkboxRef.current.indeterminate = indeterminates.includes(node.id);
+  }, [node.id, indeterminates]);
 
   return (
     <div className='flex items-center'>
@@ -96,7 +97,7 @@ const TreeItem = ({ node }: { node: TreeNode }) => {
         ref={checkboxRef}
         id={`${node.id}`}
         type='checkbox'
-        checked={state[node.id] === true}
+        checked={checked.includes(node.id)}
         onChange={(e) => selectNode(node.id, e.target.checked)}
       />
       <label htmlFor={`${node.id}`} className='flex items-center pl-1'>

@@ -18,7 +18,7 @@ export interface FlatNode<T extends NodeId> extends Node<T> {
 export type FlatNodesMap<T extends NodeId> = Map<T, FlatNode<T>>;
 
 export type ChecboxState = boolean | 'indeterminate';
-export type NodeState<T extends NodeId> = Record<T, ChecboxState>;
+export type NodeState<T extends NodeId> = Map<T, ChecboxState>;
 
 export interface UserCheckBoxTreeReturnType<T extends NodeId> {
   checked: T[];

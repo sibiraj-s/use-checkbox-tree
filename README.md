@@ -20,13 +20,13 @@ import useCheckboxTree from 'use-checkbox-tree';
 
 const nodes = [
   {
-    id: '1',
+    id: 1,
     children: [
       {
-        id: '1.1',
+        id: 1.1,
       },
       {
-        id: '1.2',
+        id: 1.2,
       },
     ],
   },
@@ -54,20 +54,20 @@ root.render(<TreeComponent />);
 - deSelectNode - a function to deselect node
 
 ```js
-selectNode('1'); // select a node
-deSelectNode('1'); // deselect a node
-selectNode('1', true); // select a node
-selectNode('1', false); // deselect a node
+selectNode(1); // select a node
+deSelectNode(1); // deselect a node
+selectNode(1, true); // select a node
+selectNode(1, false); // deselect a node
 ```
 
 - clear - a function to clear all selected items
 
 - state - object with id as key and value as `boolean | indeterminate`
 
-```json
-{
-  "1": "indeterminate",
-  "1.1": true,
-  "1.2": false
+```js
+Map{
+  1: "indeterminate",
+  1.1: true,
+  1.2: false
 }
 ```
