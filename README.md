@@ -35,7 +35,11 @@ const nodes = [
 const initialValue = [];
 
 const TreeComponent = () => {
-  const { checked, state, selectNode } = useCheckboxTree(nodes, initialValue);
+  const { checked, indeterminates, state, selectNode } = useCheckboxTree(nodes, initialValue);
+
+  // checked -> [1.2]
+  // indeterminates -> [1]
+  // state.get(1) -> 'indeterminate'
 
   return (
     // iterate through nodes and create your own tree view
