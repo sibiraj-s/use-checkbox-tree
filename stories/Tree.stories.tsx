@@ -4,8 +4,8 @@ import { useEffect, useRef } from 'react';
 import useCheckboxTree, { CheckboxTreeProvider, useCheckboxTreeContext } from '../src/index';
 import type { UserCheckBoxTreeReturnType } from '../src/types';
 
-import { ReactComponent as FolderIcon } from './assets/folder.svg';
-import { ReactComponent as FileIcon } from './assets/file.svg';
+import FolderIcon from './assets/folder.svg?react';
+import FileIcon from './assets/file.svg?react';
 
 interface TreeNode {
   id: number;
