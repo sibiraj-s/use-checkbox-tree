@@ -4,7 +4,7 @@
   "description": "React hook for checkbox tree component",
   "author": "sibiraj-s",
   "license": "MIT",
-  "repository": "https://github.com/sibiraj-s/use-checkbox-tree.git",
+  "repository": "github:sibiraj-s/use-checkbox-tree",
   "bugs": "https://github.com/sibiraj-s/use-checkbox-tree/issues",
   "homepage": "https://github.com/sibiraj-s/use-checkbox-tree#readme",
   "type": "module",
@@ -12,8 +12,11 @@
   "module": "dist/index.js",
   "exports": {
     ".": {
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      },
       "types": "./dist/index.d.ts",
-      "require": "./dist/index.cjs",
       "import": "./dist/index.js"
     },
     "./package.json": "./package.json"
@@ -30,7 +33,7 @@
   "scripts": {
     "lint": "eslint . --ext=.js,.ts --ignore-path=.gitignore",
     "test": "vitest --reporter verbose --coverage",
-    "build": "rollup -c",
+    "build": "tsup",
     "prepare": "is-ci || husky install",
     "storybook": "storybook dev -p 6006",
     "build:storybook": "storybook build",
@@ -41,7 +44,6 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^19.7.1",
-    "@rollup/plugin-typescript": "^12.1.2",
     "@storybook/addon-essentials": "^8.5.3",
     "@storybook/addon-interactions": "^8.5.3",
     "@storybook/addon-links": "^8.5.3",
@@ -67,12 +69,12 @@
     "postcss": "^8.5.1",
     "postcss-loader": "^8.1.1",
     "prettier": "^3.4.2",
-    "publint": "^0.2.12",
+    "publint": "^0.3.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "rollup": "^4.34.2",
     "storybook": "^8.5.3",
     "tailwindcss": "^4.0.3",
+    "tsup": "^8.3.6",
     "typescript": "^5.7.3",
     "vite": "^6.0.11",
     "vite-plugin-svgr": "^4.3.0",
