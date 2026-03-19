@@ -7,11 +7,12 @@ const preview: Preview = {
     actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
       matchers: {
-        color: /(background|color)$/i, // eslint-disable-line prefer-named-capture-group
+        color: /(background|color)$/i,
         date: /Date$/,
       },
     },
   },
+  tags: ['autodocs'],
 };
 
 export default preview;

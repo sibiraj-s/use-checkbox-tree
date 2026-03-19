@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/triple-slash-reference, @typescript-eslint/no-unused-vars */
-
 /// <reference types="vite/client" />
 /// <reference types="vite-plugin-svgr/client" />
 

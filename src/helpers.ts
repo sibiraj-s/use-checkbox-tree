@@ -35,7 +35,7 @@ export const toggleChildren = <T extends NodeId>(
   nodeId: T,
   isChecked: boolean,
   flatNodes: FlatNodesMap<T>,
-  checkedSet: Set<T>
+  checkedSet: Set<T>,
 ) => {
   const node = flatNodes.get(nodeId);
 

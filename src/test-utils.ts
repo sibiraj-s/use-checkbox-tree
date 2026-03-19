@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 const consoleFilters = [
   /^The above error occurred in the <.*?> component:/, // error boundary output
   /^Error: Uncaught .+/, // jsdom output

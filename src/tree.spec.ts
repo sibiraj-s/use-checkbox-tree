@@ -95,7 +95,7 @@ it('should set uncheck nodes correctly', () => {
   expect(result.current.indeterminates).toEqual([]);
 });
 
-it('should return checked items from ', () => {
+it('should return checked items from', () => {
   const { result } = renderHook(() => useCheckboxTree(nodes, [2]));
   act(() => {
     const checked = result.current.selectNode(2, true);
@@ -127,6 +127,8 @@ it('should clear checked items with clear method', () => {
 
 it('should throw error for nodes with duplicated ids', () => {
   const restoreConsole = suppressErrorOutput();
-  expect(() => renderHook(() => useCheckboxTree([{ id: 1 }, { id: 1 }]))).toThrow();
+  expect(() => renderHook(() => useCheckboxTree([{ id: 1 }, { id: 1 }]))).toThrow(
+    'Found duplicate entries in tree for node: 1',
+  );
   restoreConsole();
 });

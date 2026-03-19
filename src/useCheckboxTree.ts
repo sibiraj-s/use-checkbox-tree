@@ -4,7 +4,7 @@ import { addToSet, flattenNodes, toggleChildren, toggleParent } from './helpers'
 
 const useCheckboxTree = <T extends NodeId>(
   nodes: Node<T>[],
-  initialChecked: T[] = []
+  initialChecked: T[] = [],
 ): UserCheckBoxTreeReturnType<T> => {
   const [checked, setChecked] = useState<T[]>(initialChecked);
 
@@ -26,7 +26,7 @@ const useCheckboxTree = <T extends NodeId>(
       setChecked(checkedItems);
       return checkedItems;
     },
-    [checked, flatNodes]
+    [checked, flatNodes],
   );
 
   const deSelectNode = useCallback((id: T) => selectNode(id, false), [selectNode]);

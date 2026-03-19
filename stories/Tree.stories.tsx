@@ -92,21 +92,21 @@ const TreeItem = ({ node }: { node: TreeNode }) => {
   }, [node.id, indeterminates]);
 
   return (
-    <div className='flex items-center'>
+    <div className="flex items-center">
       <input
         ref={checkboxRef}
         id={`${node.id}`}
-        type='checkbox'
+        type="checkbox"
         checked={checked.includes(node.id)}
         onChange={(e) => selectNode(node.id, e.target.checked)}
       />
-      <label htmlFor={`${node.id}`} className='flex items-center pl-1'>
-        <span className='ml-2 mr-1'>
-          {node.type === 'file' && <FileIcon className='w-4 h-4' />}
-          {node.type === 'directory' && <FolderIcon className='w-4 h-4' />}
+      <label htmlFor={`${node.id}`} className="flex items-center pl-1">
+        <span className="ml-2 mr-1">
+          {node.type === 'file' && <FileIcon className="w-4 h-4" />}
+          {node.type === 'directory' && <FolderIcon className="w-4 h-4" />}
         </span>
         {node.name}
-        <span className='text-sm'>{node.type === 'directory' ? '/' : ''}</span>
+        <span className="text-sm">{node.type === 'directory' ? '/' : ''}</span>
       </label>
     </div>
   );
@@ -118,11 +118,11 @@ const TreeView = ({ nodes }: { nodes: TreeNode[] }) => {
       {nodes.map((node) => {
         return (
           <div key={`Tree__${node.id}`}>
-            <div className='flex items-center'>
+            <div className="flex items-center">
               <TreeItem node={node} />
             </div>
             {node.children && (
-              <div className='pl-5 my-1 flex flex-col'>
+              <div className="pl-5 my-1 flex flex-col">
                 <TreeView nodes={node.children} />
               </div>
             )}
