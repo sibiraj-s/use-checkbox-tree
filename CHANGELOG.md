@@ -13,6 +13,12 @@ All notable changes to this project will be documented in this file.
 > - Documentation
 > - Internal
 
+## v0.2.1 (2026-03-19)
+
+#### Bug Fixes
+
+- fix set correct indeterminate state on children ([af1ebfe](https://github.com/sibiraj-s/use-checkbox-tree/commit/af1ebfe))
+
 ## v0.2.0 (2023-07-03)
 
 #### Breaking Changes
