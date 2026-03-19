@@ -17,14 +17,14 @@ export interface FlatNode<T extends NodeId> extends Node<T> {
 }
 export type FlatNodesMap<T extends NodeId> = Map<T, FlatNode<T>>;
 
-export type ChecboxState = boolean | 'indeterminate';
-export type NodeState<T extends NodeId> = Map<T, ChecboxState>;
+export type CheckboxState = boolean | 'indeterminate';
+export type NodeState<T extends NodeId> = Map<T, CheckboxState>;
 
 export interface UserCheckBoxTreeReturnType<T extends NodeId> {
   checked: T[];
   state: NodeState<T>;
   indeterminates: T[];
-  selectNode: (id: T, isChecked?: boolean) => void;
+  selectNode: (id: T, isChecked?: boolean) => T[];
   deSelectNode: (id: T) => void;
   clear: () => void;
 }

@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import { ChecboxState, FlatNode, Node, NodeId, NodeState, UserCheckBoxTreeReturnType } from './types';
+import { CheckboxState, FlatNode, Node, NodeId, NodeState, UserCheckBoxTreeReturnType } from './types';
 import { addToSet, flattenNodes, toggleChildren, toggleParent } from './helpers';
 
 const useCheckboxTree = <T extends NodeId>(
@@ -52,7 +52,7 @@ const useCheckboxTree = <T extends NodeId>(
 
       // if there are no checked items in direct child
       // try deeper by iterating over its child to check if there any checed items inside
-      isIndeterminate ||= children.some((child) => isNodeIndeterminate(child, isChecked));
+      isIndeterminate ||= children.some((child) => isNodeIndeterminate(child, checked.includes(child.id)));
 
       return isIndeterminate;
     };
@@ -60,7 +60,7 @@ const useCheckboxTree = <T extends NodeId>(
     flatNodes.forEach((node: FlatNode<T>) => {
       const isChecked = checked.includes(node.id);
       const isIndeterminate = isNodeIndeterminate(node, isChecked);
-      const checkboxState: ChecboxState = isIndeterminate ? 'indeterminate' : isChecked;
+      const checkboxState: CheckboxState = isIndeterminate ? 'indeterminate' : isChecked;
       nodeState.set(node.id, checkboxState);
     });
 
