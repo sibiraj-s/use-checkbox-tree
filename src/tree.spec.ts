@@ -80,14 +80,14 @@ it('should deselect node with deSelectNode method', () => {
     result.current.deSelectNode(2.2);
   });
 
-  expect(result.current.checked).toEqual([2.1]);
-  expect(result.current.indeterminates).toEqual([1, 2]);
+  expect(result.current.checked).toEqual([2, 2.1]);
+  expect(result.current.indeterminates).toEqual([1]);
 });
 
 it('should set uncheck nodes correctly', () => {
   const { result } = renderHook(() => useCheckboxTree(nodes, [2]));
 
-  expect(result.current.checked).toEqual([2]);
+  expect(result.current.checked).toEqual([2, 2.1]);
 
   act(() => {
     result.current.selectNode(2, false);
@@ -138,11 +138,12 @@ it('should throw error for nodes with duplicated ids', () => {
 it('should detect indeterminate state through multiple levels (grandchild only checked)', () => {
   // Regression test for isNodeIndeterminate recursive call fix:
   // previously passed parent's isChecked to child, masking deep indeterminate states
-  const deepNodes = [{ id: 1, children: [{ id: 2, children: [{ id: 3 }] }] }];
+  const deepNodes = [{ id: 1, children: [{ id: 2, children: [{ id: 3 }, { id: 4 }] }] }];
   const { result } = renderHook(() => useCheckboxTree(deepNodes, [3]));
 
   expect(result.current.checked).toEqual([3]);
   expect(result.current.state.get(3)).toEqual(true);
+  expect(result.current.state.get(4)).toEqual(false);
   expect(result.current.state.get(2)).toEqual('indeterminate');
   expect(result.current.state.get(1)).toEqual('indeterminate');
   expect(result.current.indeterminates).toEqual(expect.arrayContaining([1, 2]));
@@ -249,4 +250,102 @@ it('should provide state via CheckboxTreeProvider and useCheckboxTreeContext', (
   expect(result.current.ctx).not.toBeNull();
   expect(result.current.ctx?.checked).toEqual([2, 2.1]);
   expect(result.current.ctx?.indeterminates).toEqual([1]);
+});
+
+it('should check a parent with a falsy id when all its children are checked', () => {
+  const { result } = renderHook(() => useCheckboxTree([{ id: 0, children: [{ id: 1 }, { id: 2 }] }]));
+
+  act(() => {
+    result.current.selectNode(1);
+  });
+
+  act(() => {
+    result.current.selectNode(2);
+  });
+
+  expect(result.current.checked).toEqual([0, 1, 2]);
+  expect(result.current.state.get(0)).toEqual(true);
+  expect(result.current.indeterminates).toEqual([]);
+});
+
+it('should keep all selections when selectNode is called multiple times before a re-render', () => {
+  const { result } = renderHook(() => useCheckboxTree(nodes, []));
+
+  let returned: number[] = [];
+  act(() => {
+    result.current.selectNode(2.1);
+    returned = result.current.selectNode(2.2);
+  });
+
+  expect(returned).toEqual([1, 2, 2.1, 2.2]);
+  expect(result.current.checked).toEqual([1, 2, 2.1, 2.2]);
+});
+
+it('should keep selections when selecting and deselecting in the same handler', () => {
+  const { result } = renderHook(() => useCheckboxTree(nodes, []));
+
+  act(() => {
+    result.current.selectNode(1);
+    result.current.deSelectNode(2.2);
+  });
+
+  expect(result.current.checked).toEqual([2, 2.1]);
+  expect(result.current.indeterminates).toEqual([1]);
+});
+
+it('should check descendants of initially checked nodes', () => {
+  const { result } = renderHook(() => useCheckboxTree(nodes, [1]));
+
+  expect(result.current.checked).toEqual([1, 2, 2.1, 2.2]);
+  expect(result.current.state.get(2.1)).toEqual(true);
+  expect(result.current.indeterminates).toEqual([]);
+});
+
+it('should check parents when all their children are initially checked', () => {
+  const { result } = renderHook(() => useCheckboxTree(nodes, [2.1, 2.2]));
+
+  expect(result.current.checked).toEqual([1, 2, 2.1, 2.2]);
+  expect(result.current.state.get(1)).toEqual(true);
+  expect(result.current.indeterminates).toEqual([]);
+});
+
+it('should ignore initially checked ids that are not in the tree', () => {
+  const { result } = renderHook(() => useCheckboxTree(nodes, [2.2, 99]));
+
+  expect(result.current.checked).toEqual([2.2]);
+  expect(result.current.indeterminates).toEqual([1]);
+});
+
+it('should drop checked ids when their nodes are removed from the tree', () => {
+  let treeNodes = [{ id: 1 }, { id: 2 }];
+  const { result, rerender } = renderHook(() => useCheckboxTree(treeNodes, []));
+
+  act(() => {
+    result.current.selectNode(2);
+  });
+
+  treeNodes = [{ id: 1 }];
+  rerender();
+
+  expect(result.current.checked).toEqual([]);
+  expect(result.current.state.has(2)).toEqual(false);
+
+  act(() => {
+    result.current.selectNode(1);
+  });
+
+  expect(result.current.checked).toEqual([1]);
+});
+
+it('should update parent state when the tree changes', () => {
+  let treeNodes = [{ id: 1, children: [{ id: 2 }, { id: 3 }] }];
+  const { result, rerender } = renderHook(() => useCheckboxTree(treeNodes, [2]));
+
+  expect(result.current.indeterminates).toEqual([1]);
+
+  treeNodes = [{ id: 1, children: [{ id: 2 }] }];
+  rerender();
+
+  expect(result.current.checked).toEqual([1, 2]);
+  expect(result.current.indeterminates).toEqual([]);
 });

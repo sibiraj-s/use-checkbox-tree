@@ -1,38 +1,45 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { CheckboxState, FlatNode, Node, NodeId, NodeState, UserCheckBoxTreeReturnType } from './types';
-import { addToSet, flattenNodes, toggleChildren, toggleParent } from './helpers';
+import { addToSet, flattenNodes, normalizeChecked, toggleChildren, toggleParent } from './helpers';
 
 const useCheckboxTree = <T extends NodeId>(
   nodes: Node<T>[],
   initialChecked: T[] = [],
 ): UserCheckBoxTreeReturnType<T> => {
-  const [checked, setChecked] = useState<T[]>(initialChecked);
+  const [rawChecked, setRawChecked] = useState<T[]>(initialChecked);
+
+  // latest checked ids, so consecutive selectNode calls before a re-render build on each other
+  const latestChecked = useRef<T[]>(rawChecked);
 
   const flatNodes = useMemo(() => flattenNodes(nodes), [nodes]);
 
+  const checked = useMemo(() => normalizeChecked(rawChecked, flatNodes), [rawChecked, flatNodes]);
+
   const selectNode = useCallback(
     (id: T, isChecked: boolean = true) => {
-      const checkedSet = new Set<T>(checked);
+      const checkedSet = new Set<T>(normalizeChecked(latestChecked.current, flatNodes));
 
       if (!flatNodes.has(id)) {
-        return checked;
+        return [...checkedSet];
       }
 
       addToSet<T>(checkedSet, id, isChecked);
       toggleChildren<T>(id, isChecked, flatNodes, checkedSet);
       toggleParent<T>(id, checkedSet, flatNodes);
 
-      const checkedItems = [...checkedSet];
-      setChecked(checkedItems);
+      const checkedItems = normalizeChecked(checkedSet, flatNodes);
+      latestChecked.current = checkedItems;
+      setRawChecked(checkedItems);
       return checkedItems;
     },
-    [checked, flatNodes],
+    [flatNodes],
   );
 
   const deSelectNode = useCallback((id: T) => selectNode(id, false), [selectNode]);
 
   const clear = useCallback(() => {
-    setChecked([]);
+    latestChecked.current = [];
+    setRawChecked([]);
   }, []);
 
   const state = useMemo(() => {
